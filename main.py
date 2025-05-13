@@ -280,7 +280,7 @@ with col1:
         </div>
         <h3 class="card-title">Instagram</h3>
         <p class="card-text">Follow us for beautiful visuals, behind-the-scenes content, and daily inspiration.</p>
-        <a href="https://instagram-trend-analyzer.streamlit.app?nocache=123" target="_self" class="social-btn instagram-btn">Let's Go!</a>
+        <a href="https://instagram-trend-analyzer.streamlit.app" target="_self" class="social-btn instagram-btn">Let's Go!</a>
     </div>
     """, unsafe_allow_html=True)
 
