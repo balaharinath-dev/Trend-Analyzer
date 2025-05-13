@@ -1,0 +1,4 @@
+[server]
+enableCORS = false
+enableXsrfProtection = false
+cookieSecret = "your-random-secret-string"
