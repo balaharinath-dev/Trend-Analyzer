@@ -280,7 +280,7 @@ with col1:
         </div>
         <h3 class="card-title">Instagram</h3>
         <p class="card-text">Follow us for beautiful visuals, behind-the-scenes content, and daily inspiration.</p>
-        <a href="https://instagram-trend-analyzer.streamlit.app/" target="_self" class="social-btn instagram-btn">Let's Go!</a>
+        <a href="https://instagram-trend-analyzer.streamlit.app?nocache=123" target="_self" class="social-btn instagram-btn">Let's Go!</a>
     </div>
     """, unsafe_allow_html=True)
 
@@ -292,7 +292,7 @@ with col2:
         </div>
         <h3 class="card-title">YouTube</h3>
         <p class="card-text">Subscribe for video tutorials, product showcases, and live streams. Don't forget to hit the bell icon!</p>
-        <a href="https://youtube-trend-analyzer.streamlit.app/" target="_self" class="social-btn youtube-btn">Let's Go!</a>
+        <a href="https://youtube-trend-analyzer.streamlit.app" target="_self" class="social-btn youtube-btn">Let's Go!</a>
     </div>
     """, unsafe_allow_html=True)
 
@@ -304,7 +304,7 @@ with col3:
         </div>
         <h3 class="card-title">X (Twitter)</h3>
         <p class="card-text">Stay updated with our latest news, announcements, and join the conversation with our team.</p>
-        <a href="https://twitter-trend-analyzer.streamlit.app/" target="_self" class="social-btn twitter-btn">Let's Go!</a>
+        <a href="https://twitter-trend-analyzer.streamlit.app" target="_self" class="social-btn twitter-btn">Let's Go!</a>
     </div>
     """, unsafe_allow_html=True)
 
