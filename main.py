@@ -1,4 +1,6 @@
 import streamlit as st
+import base64
+import os
 
 # Set page configuration
 st.set_page_config(
@@ -8,52 +10,60 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-import base64
+# Function to load and encode images
+def load_image_as_base64(image_path):
+    # Check if file exists
+    if not os.path.exists(image_path):
+        st.error(f"Image file not found: {image_path}")
+        return None
+    
+    try:
+        with open(image_path, "rb") as file:
+            img_bytes = file.read()
+        return base64.b64encode(img_bytes).decode()
+    except Exception as e:
+        st.error(f"Error loading image: {str(e)}")
+        return None
 
 # Hide Streamlit default elements
 hide_streamlit_style = """
-    <style>
-        
-        .stApp {
-            background-color: #ffffff
-        }
-        .block-container {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-            max-width: 1500px;
-        }
-    </style>
+<style>
+    .stApp {
+        background-color: #ffffff
+    }
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        max-width: 1500px;
+    }
+</style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# Load local image and encode to base64
-image_path = './prodapt_new.png'  # replace with your image file path
-with open(image_path, "rb") as file:
-    img_bytes = file.read()
-encoded = base64.b64encode(img_bytes).decode()
-
-# Inject CSS + image tag for absolute positioning
-st.markdown(
-    f"""
-    <style>
-    .top-left-image {{
-        position: absolute;
-        top: 10px;
-        left: 0px;
-        width: 150px;  /* Adjust width as needed */
-        height: auto;  /* Keeps aspect ratio */
-        z-index: 999;  /* Makes sure it's on top of other elements */
-    }}
-    </style>
-    <img src="data:image/png;base64,{encoded}" class="top-left-image">
-    """,
-    unsafe_allow_html=True
-)
+# Load company logo
+prodapt_logo = load_image_as_base64('./prodapt_new.png')
+if prodapt_logo:
+    # Inject CSS + image tag for absolute positioning
+    st.markdown(
+        f"""
+        <style>
+        .top-left-image {{
+            position: absolute;
+            top: 10px;
+            left: 0px;
+            width: 150px;
+            height: auto;
+            z-index: 999;
+        }}
+        </style>
+        <img src="data:image/png;base64,{prodapt_logo}" class="top-left-image">
+        """,
+        unsafe_allow_html=True
+    )
 
 # Custom CSS for styling
 st.markdown("""
 <style>
-
     /* Main heading style */
     .main-heading {
         text-align: center;
@@ -64,10 +74,9 @@ st.markdown("""
         background: -webkit-linear-gradient(#09122C, #D84040);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        
     }
     
-    .synapt:{
+    .synapt-logo {
         margin-bottom: 3rem !important;
     }
     
@@ -222,6 +231,12 @@ st.markdown("""
             max-width: 400px;
         }
     }
+
+    /* Fix for X logo container */
+    .twitter-icon-container img {
+        width: 50px;
+        height: auto;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -230,24 +245,29 @@ st.markdown("""
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 """, unsafe_allow_html=True)
 
-image_file = './synapt.png'
-with open(image_file, "rb") as file:
-    img_bytes = file.read()
+# Load synapt logo
+synapt_logo = load_image_as_base64('./synapt.png')
 
-# Encode it as base64
-import base64
-encoded = base64.b64encode(img_bytes).decode()
-
-# Page content
-st.markdown(
-    f"""
-    <div style="display: flex; align-items: center; justify-content:center">
-        <h1 class="main-heading" style="">Social Trend Analyzer by</h1>
-        <img src="data:image/png;base64,{encoded}" class="synapt" alt="synapt" width="150" height="60">
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# Page content with error handling for missing image
+if synapt_logo:
+    st.markdown(
+        f"""
+        <div style="display: flex; align-items: center; justify-content:center">
+            <h1 class="main-heading" style="">Social Trend Analyzer by</h1>
+            <img src="data:image/png;base64,{synapt_logo}" class="synapt-logo" alt="synapt" width="150" height="60">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+else:
+    st.markdown(
+        """
+        <div style="display: flex; align-items: center; justify-content:center">
+            <h1 class="main-heading" style="">Social Trend Analyzer by Synapt</h1>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 # Create the grid layout
 col1, col2, col3 = st.columns(3)
@@ -260,7 +280,7 @@ with col1:
         </div>
         <h3 class="card-title">Instagram</h3>
         <p class="card-text">Follow us for beautiful visuals, behind-the-scenes content, and daily inspiration.</p>
-        <a href="https://instagram-trend-analyzer.streamlit.app/" target="_blank" class="social-btn instagram-btn">Let's Go!</a>
+        <a href="https://instagram-trend-analyzer.streamlit.app/" target="_self" class="social-btn instagram-btn">Let's Go!</a>
     </div>
     """, unsafe_allow_html=True)
 
@@ -286,4 +306,15 @@ with col3:
         <p class="card-text">Stay updated with our latest news, announcements, and join the conversation with our team.</p>
         <a href="https://twitter-trend-analyzer.streamlit.app/" target="_self" class="social-btn twitter-btn">Let's Go!</a>
     </div>
+    """, unsafe_allow_html=True)
+
+# Add session state cookie configuration
+# This won't directly solve the cross-site cookie issue but can help with session handling
+if 'cookie_configured' not in st.session_state:
+    st.session_state.cookie_configured = True
+    st.markdown("""
+    <script>
+    // This attempts to handle cookies more securely
+    document.cookie = "streamlit_session=; SameSite=None; Secure; Path=/";
+    </script>
     """, unsafe_allow_html=True)
