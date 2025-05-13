@@ -310,8 +310,8 @@ with col3:
 
 # Add session state cookie configuration
 # This won't directly solve the cross-site cookie issue but can help with session handling
-if 'cookie_configured' not in st.session_state:
-    st.session_state.cookie_configured = True
+# if 'cookie_configured' not in st.session_state:
+#     st.session_state.cookie_configured = True
     st.markdown("""
     <script>
     // This attempts to handle cookies more securely
